@@ -14,15 +14,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController nameController;
+  final nameController = TextEditingController();
 
-  late TextEditingController passwordController;
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    nameController = TextEditingController();
-
-    passwordController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,51 +35,61 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Login",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold),
-            ),
-            AuthTextfield(
-              controller: nameController,
-              hintText: "Name",
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            AuthTextfield(
-              controller: passwordController,
-              hintText: "Password",
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const AuthButton(
-              buttonText: "Login",
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, SignUpPage.route());
-              },
-              child: RichText(
-                  text: const TextSpan(
-                      children: [
-                    TextSpan(
-                        text: "Sign Up",
-                        style: TextStyle(color: AppPallete.gradient2))
-                  ],
-                      text: "Don't have an account ? ",
-                      style: TextStyle(fontWeight: FontWeight.bold))),
-            )
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Login",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold),
+              ),
+              AuthTextfield(
+                controller: nameController,
+                hintText: "Name",
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              AuthTextfield(
+                controller: passwordController,
+                hintText: "Password",
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              AuthButton(
+                onPressed: () {
+                  // if (formKey.currentState!.validate()) {
+                  //   context.read<AuthBloc>().add(AuthSignUp(
+                  //       password: passwordController.text,
+                  //       name: nameController.text));
+                  // }
+                },
+                buttonText: "Login",
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, SignUpPage.route());
+                },
+                child: RichText(
+                    text: const TextSpan(
+                        children: [
+                      TextSpan(
+                          text: "Sign Up",
+                          style: TextStyle(color: AppPallete.gradient2))
+                    ],
+                        text: "Don't have an account ? ",
+                        style: TextStyle(fontWeight: FontWeight.bold))),
+              )
+            ],
+          ),
         ),
       ),
     );
