@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:demo_clean_architecture/features/auth/domain/entities/user.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/current_user.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_login.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/usecase/usecase.dart';
 
 part 'auth_bloc_event.dart';
 part 'auth_bloc_state.dart';
@@ -23,6 +27,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(AuthInitial()) {
     on<AuthSignUp>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
+    on<AuthIsUserLoggedIn>(_onAuthIsUserLoggedIn);
+  }
+
+  Future<void> _onAuthIsUserLoggedIn(
+      AuthIsUserLoggedIn event, Emitter<AuthState> emit) async {
+    final res = await _currentUser(Noparams());
+    res.fold(
+      (l) => emit(AuthFailure(message: l.message)),
+      (user) {
+        log("${user.email},${user.id},${user.name}");
+        emit(AuthSuccess(user: user));
+      },
+    );
   }
 
   Future<void> _onAuthSignUp(AuthSignUp event, Emitter<AuthState> emit) async {
