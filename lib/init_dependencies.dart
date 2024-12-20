@@ -2,6 +2,7 @@ import 'package:demo_clean_architecture/core/theme/secrets/secret_file.dart';
 import 'package:demo_clean_architecture/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:demo_clean_architecture/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:demo_clean_architecture/features/auth/domain/repository/auth_repository.dart';
+import 'package:demo_clean_architecture/features/auth/domain/usecases/current_user.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_login.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:demo_clean_architecture/features/auth/presentation/bloc/auth_bloc_bloc.dart';
@@ -17,12 +18,20 @@ Future<void> initDependencies() async {
 }
 
 void _initAuth() {
-  serviceLocator.registerFactory<AuthRemoteDataSource>(
-      () => AuthRemoteDataSourceImpl(supabaseClient: serviceLocator()));
-  serviceLocator.registerFactory<AuthRepository>(
-      () => AuthRepositoryImpl(serviceLocator()));
-  serviceLocator.registerFactory(() => UserSignUp(serviceLocator()));
-  serviceLocator.registerFactory(() => UserLogin(serviceLocator()));
-  serviceLocator.registerLazySingleton(() =>
-      AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator()));
+  serviceLocator
+    //dataSource
+    ..registerFactory<AuthRemoteDataSource>(
+        () => AuthRemoteDataSourceImpl(supabaseClient: serviceLocator()))
+    //REPOSITORY
+    ..registerFactory<AuthRepository>(
+        () => AuthRepositoryImpl(serviceLocator()))
+    //USE_CASES
+    ..registerFactory(() => UserSignUp(serviceLocator()))
+    ..registerFactory(() => UserLogin(serviceLocator()))
+    ..registerFactory(() => CurrentUser(serviceLocator()))
+    //BLOC
+    ..registerLazySingleton(() => AuthBloc(
+        userSignUp: serviceLocator(),
+        userLogin: serviceLocator(),
+        currentUser: serviceLocator()));
 }

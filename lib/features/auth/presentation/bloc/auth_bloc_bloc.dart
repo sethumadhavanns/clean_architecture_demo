@@ -1,4 +1,5 @@
 import 'package:demo_clean_architecture/features/auth/domain/entities/user.dart';
+import 'package:demo_clean_architecture/features/auth/domain/usecases/current_user.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_login.dart';
 import 'package:demo_clean_architecture/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,15 @@ part 'auth_bloc_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignUp _userSignUp;
   final UserLogin _userLogin;
+  final CurrentUser _currentUser;
 
-  AuthBloc({required UserSignUp userSignUp, required UserLogin userLogin})
-      : _userSignUp = userSignUp,
+  AuthBloc({
+    required UserSignUp userSignUp,
+    required UserLogin userLogin,
+    required CurrentUser currentUser,
+  })  : _userSignUp = userSignUp,
         _userLogin = userLogin,
+        _currentUser = currentUser,
         super(AuthInitial()) {
     on<AuthSignUp>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
