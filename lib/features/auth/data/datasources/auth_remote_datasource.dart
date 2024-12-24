@@ -74,7 +74,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             .select()
             .eq("id", currentUserSession!.user.id)
             .single();
-        return UserModel.fromJson(userData);
+        return UserModel.fromJson(userData).copyWith(
+          email: currentUserSession!.user.email,
+        );
       }
       return null;
     } catch (e) {

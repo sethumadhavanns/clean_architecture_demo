@@ -1,5 +1,5 @@
 import 'package:demo_clean_architecture/core/error/failure.dart';
-import 'package:demo_clean_architecture/features/auth/domain/entities/user.dart';
+import 'package:demo_clean_architecture/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class AuthRepository {

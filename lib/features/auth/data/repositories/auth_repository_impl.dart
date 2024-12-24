@@ -1,7 +1,7 @@
 import 'package:demo_clean_architecture/core/error/exceptions.dart';
 import 'package:demo_clean_architecture/core/error/failure.dart';
 import 'package:demo_clean_architecture/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:demo_clean_architecture/features/auth/domain/entities/user.dart';
+import 'package:demo_clean_architecture/core/common/entities/user.dart';
 import 'package:demo_clean_architecture/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/src/either.dart';
 
